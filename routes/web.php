@@ -15,30 +15,35 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\EventController;
 
+//exibe a página inicial do aplicativo.
 Route::get('/', [EventController::class, 'index']);
+
+//exibe um formulário para criar um novo evento
 Route::get('/events/create', [EventController::class, 'create'])->middleware('auth');
+
+//exibe informações sobre um evento específico com base em seu ID
 Route::get('/events/{id}', [EventController::class, 'show']);
+
+//cria um novo evento com base nos dados enviados por um formulário de criação
 Route::post('/events', [EventController::class, 'store']);
-// Route::delete('/events/{id}', [EventController::class, 'destroy'])->middleware('auth');
+
+//exclui um evento com base em seu ID
 Route::delete('/events/{id}', [EventController::class, 'destroy'])->middleware('auth')->name('events.destroy');
+
+// exibe um formulário para editar um evento existente com base em seu ID
 Route::get('/events/edit/{id}', [EventController::class, 'edit'])->middleware('auth');
+
+//atualiza um evento existente com base nos dados enviados por um formulário de edição
 Route::put('/events/update/{id}', [EventController::class, 'update'])->middleware('auth');
 
-Route::get('/contact', function () {
-    return view('contact');
-});
+//verifica se já existe um email cadastrado na tentativa de cadastrar um novo usuário
+Route::get('/check-user/{email}', [EventController::class, 'checkUser']);
 
-Route::get('/check-user/{email}', function($email) {
-    $user = DB::table('users')->where('email', $email)->first();
-    if ($user) {
-        return response()->json(['exists' => true]);
-    } else {
-        return response()->json(['exists' => false]);
-    }
-});
-
+//exibe uma lista de eventos existentes
 Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware('auth');
 
+//permite que um usuário participe de um evento existente com base em seu ID
 Route::post('/events/join/{id}', [EventController::class, 'joinEvent'])->middleware('auth');
 
+//permite que um usuário deixe de participar de um evento existente com base em seu ID
 Route::delete('/events/leave/{id}', [EventController::class, 'leaveEvent'])->middleware('auth');

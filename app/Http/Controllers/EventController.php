@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Event;
 use App\Models\User;
 
 class EventController extends Controller
 {
+
+    public function checkUser($email)
+    {
+        $user = DB::table('users')->where('email', $email)->first();
+
+        if ($user) {
+            return response()->json(['exists' => true]);
+        } else {
+            return response()->json(['exists' => false]);
+        }
+    }
 
     public function index() {
 
@@ -190,5 +201,7 @@ class EventController extends Controller
         return redirect('/dashboard')->with('msg', 'Você saiu com sucesso do evento: ' . $event->title);
 
     }
+
+
 
 }

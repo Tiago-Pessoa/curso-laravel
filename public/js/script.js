@@ -25,19 +25,20 @@ function registerUser() {
     var email = document.getElementById('email').value;
 
     // Verifica se já existe um usuário com o email cadastrado
+
     axios.get('/check-user/' + email)
-    .then(response => {
-        if (response.data.exists) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Operação cancelada!',
-              text: 'O usuário com o e-mail ' + email + ' já existe.'
-            });
-        }
-    })
-    .catch(error => {
-        console.log('Ocorreu um erro ao verificar o usuário: ' + error);
-    });
+  .then(response => {
+    if (response.data.exists) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Operação cancelada!',
+        text: 'O usuário com o e-mail ' + email + ' já existe.'
+      });
+    }
+  })
+  .catch(error => {
+    console.log('Ocorreu um erro ao verificar o usuário: ' + error);
+  });
 
     // Verifica se todos os campos estão preenchidos
     for (var i = 0; i < inputs.length; i++) {
@@ -131,3 +132,4 @@ function validarFormulario() {
         return true;
     }
 }
+
